@@ -31,14 +31,19 @@ public:
 class C {} ;
 
 int main() {
-/*    auto injector = di::make_injector(
+    auto injectorA = di::make_injector(
         di::bind<Named>().to<A>()
     );
+    auto xa = injectorA.create<Exclamator>();
+    xa.f();
 
-    auto xa = injector.create<Exclamator>();
-    xa.f();*/
+    auto injectorB = di::make_injector(
+        di::bind<Named>().to<B>()
+    );
+    auto xb = injectorB.create<Exclamator>();
+    xb.f();
 
-    A a;
+/*    A a;
     Exclamator xa {a};
     xa.f();
 
@@ -48,7 +53,7 @@ int main() {
 
     C c;
     Exclamator xc {c};
-//    xc.f();
+//    xc.f();*/
 
     return 0;
 }
