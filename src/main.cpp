@@ -20,9 +20,15 @@ private:
     U gui;
 };
 
+
+auto statement = []{};
+
 class BusinessLogic_XYZ {
 public:
-    std::string rule() { return "Profit!"; }
+    BOOST_DI_INJECT(BusinessLogic_XYZ, (named=statement) std::string stmnt): statement{stmnt} {}
+    std::string rule() { return statement; }
+private:
+    std::string statement;
 };
 
 class GUI_123 {
@@ -35,6 +41,7 @@ class C {} ;
 int main() {
     auto injector = di::make_injector(
         di::bind<BusinessLogic>().to<BusinessLogic_XYZ>(),
+        di::bind<std::string>().named(statement).to("Profit!!"),
         di::bind<GUI>().to<GUI_123>()
     );
     auto app = injector.create<App>();
