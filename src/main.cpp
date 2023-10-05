@@ -4,10 +4,7 @@
 #include <boost/di.hpp>
 namespace di = boost::di;
 
-class BusinessLogic;
-class GUI;
-
-template <class T = BusinessLogic, class U = GUI>
+template <class T = class BusinessLogic, class U = class GUI>
 class App {
 public:
     App(T bl, U g): business_logic{bl}, gui{g} {}
