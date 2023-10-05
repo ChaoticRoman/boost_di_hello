@@ -4,19 +4,18 @@
 #include <boost/di.hpp>
 namespace di = boost::di;
 
-template <class T = class BusinessLogic, class U = class GUI>
+template <class BusinessLogic = class BusinessLogic, class GUI = class GUI>
 class App {
 public:
-    App(T bl, U g): business_logic{bl}, gui{g} {}
+    App(BusinessLogic bl, GUI g): business_logic{bl}, gui{g} {}
 
     void start() {
         gui.msg(business_logic.rule());
     }
 private:
-    T business_logic;
-    U gui;
+    BusinessLogic business_logic;
+    GUI gui;
 };
-
 
 auto statement = []{};
 
@@ -32,8 +31,6 @@ class GUI_123 {
 public:
     void msg(std::string m) { std::cout << m << std::endl; }
 };
-
-class C {} ;
 
 int main() {
     auto injector = di::make_injector(
