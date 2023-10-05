@@ -4,56 +4,41 @@
 #include <boost/di.hpp>
 namespace di = boost::di;
 
-class Named;
+class BusinessLogic;
+class GUI;
 
-template <class T = Named>
-class Exclamator {
+template <class T = BusinessLogic, class U = GUI>
+class App {
 public:
-    Exclamator(T a): x{a} {}
+    App(T bl, U g): business_logic{bl}, gui{g} {}
 
-    void f() {
-        std::cout << x.name() << std::endl;
+    void start() {
+        gui.msg(business_logic.rule());
     }
 private:
-    T x;
+    T business_logic;
+    U gui;
 };
 
-class A {
+class BusinessLogic_XYZ {
 public:
-    std::string name() { return "A"; }
+    std::string rule() { return "Profit!"; }
 };
 
-class B {
+class GUI_123 {
 public:
-    std::string name() { return "B"; }
+    void msg(std::string m) { std::cout << m << std::endl; }
 };
 
 class C {} ;
 
 int main() {
-    auto injectorA = di::make_injector(
-        di::bind<Named>().to<A>()
+    auto injector = di::make_injector(
+        di::bind<BusinessLogic>().to<BusinessLogic_XYZ>(),
+        di::bind<GUI>().to<GUI_123>()
     );
-    auto xa = injectorA.create<Exclamator>();
-    xa.f();
-
-    auto injectorB = di::make_injector(
-        di::bind<Named>().to<B>()
-    );
-    auto xb = injectorB.create<Exclamator>();
-    xb.f();
-
-/*    A a;
-    Exclamator xa {a};
-    xa.f();
-
-    B b;
-    Exclamator xb {b};
-    xb.f();
-
-    C c;
-    Exclamator xc {c};
-//    xc.f();*/
+    auto app = injector.create<App>();
+    app.start();
 
     return 0;
 }
