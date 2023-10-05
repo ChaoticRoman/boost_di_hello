@@ -4,3 +4,6 @@ build: src/main.cpp
 
 run: build
 	build/hello
+
+clean:
+	rm -rf build
